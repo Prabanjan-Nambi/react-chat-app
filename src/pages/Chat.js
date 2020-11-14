@@ -64,7 +64,7 @@ export default class Chat extends Component {
                     </Col>
                     <Col xs={4} sm={4} md={4} lg={4}>
                       <Tooltip title="Send">
-                        <Button onClick={this.handleSubmit} type="primary" shape="circle" icon={<SendOutlined />} />
+                        <Button className="chat-send-button" onClick={this.handleSubmit} type="primary" shape="circle" icon={<SendOutlined />} />
                       </Tooltip>
                     </Col>
                   </Row>

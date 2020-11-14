@@ -77,3 +77,9 @@
     transition: 0.15s all ease-in-out;
     box-sizing: border-box;
 }
+
+.chat-send-button{
+    background-color: #4870df !important;
+    height: 38px;
+    width: 38px;
+}
