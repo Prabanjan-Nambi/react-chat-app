@@ -3,9 +3,8 @@
 }
 
 body{
-  background-color: orange;
+   background-color: #dedede !important;
 }
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;

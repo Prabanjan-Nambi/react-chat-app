@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import {
   Route,
   BrowserRouter as Router,
-  Switch,
+  Switch, HashRouter,
   Redirect,
 } from "react-router-dom";
 import Home from './pages/Home';
