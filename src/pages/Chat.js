@@ -3,7 +3,7 @@ import { auth } from "../services/firebase";
 import { db } from "../services/firebase";
 import 'antd/dist/antd.css';
 import './Chat.css';
-import { Row, Col, Avatar, Input, Tooltip, Button, Layout, Image} from 'antd';
+import { Row, Col, Avatar, Input, Tooltip, Button, Layout, Image, notification} from 'antd';
 import { Comment} from 'antd';
 import { SendOutlined, FormOutlined, SettingOutlined, BellOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
@@ -31,12 +31,32 @@ export default class Chat extends Component {
       this.postFeeds = this.postFeeds.bind(this);
     }
     
-    like = () => {
-      
+    like = (event) => {
+      let likes = parseInt(event.value.likes);
+      db.ref(`/feeds/${event.key}`).update({
+          likes : likes + 1
+      });
     };
   
-    dislike = () => {
-     
+    dislike = (event) => {
+      let dislikes = parseInt(event.value.dislikes);
+      db.ref(`/feeds/${event.key}`).update({
+        dislikes : dislikes + 1
+      });
+    };
+
+    share = (event) => {
+      let placement = 'bottomLeft';
+      let shares = parseInt(event.value.shares);
+      db.ref(`/feeds/${event.key}`).update({
+        shares : shares + 1
+      });
+      notification.info({
+        message: 'Share',
+        description:
+          'Your post has been shared.',
+        placement,
+      })
     };
 
     render() {
@@ -62,7 +82,7 @@ export default class Chat extends Component {
                  </Col>
                  <Col  xs={24} sm={24} md={24} lg={6}>
                       <Avatar
-                      src="https://i.pravatar.cc/150?img=32"
+                      src="https://avatars3.githubusercontent.com/u/10627086?s=460&u=6a06199761992e8d933380f1b57371925675f5ba&v=4"
                       alt="Han Solo" title={this.state.user}></Avatar>
                       <span className="app-login-name">Logged In as : {this.state.user.email}</span>
                  </Col>
@@ -71,7 +91,9 @@ export default class Chat extends Component {
             <Content style={{marginTop: '6%'}}>
                <Row>
                   <Col xs={0} sm={0} md={0} lg={7}>
- 
+                       <div className="app-news-feeds">
+
+                       </div>
                   </Col>
                   <Col xs={24} sm={24} md={24} lg={10}>
                       <div className="create-feeds">
@@ -91,41 +113,42 @@ export default class Chat extends Component {
                               <p className="app-no-feeds">No Feeds Available!</p>
                            }
                            {this.state.feeds.map(feed => {
-                              return <Comment className="app-feeds-list"
+                              return <Comment key={feed.value.timestamp} className="app-feeds-list"
                                   actions={[
                                     <Tooltip key="comment-basic-like" title="Like">
-                                      <span onClick={this.like}>
-                                        <LikeOutlined></LikeOutlined>
-                                        <span className="comment-action">{feed.likes}</span>
+                                      <span onClick={() => this.like(feed)}>
+                                        <LikeOutlined className="app-comments-actions"></LikeOutlined>
+                                        <span className="comment-action">{feed.value.likes}</span>
                                       </span>
                                     </Tooltip>,
                                     <Tooltip key="comment-basic-dislike" title="Dislike">
-                                      <span onClick={this.dislike}>
-                                        <DislikeOutlined></DislikeOutlined>
-                                        <span className="comment-action">{feed.dislikes}</span>
+                                      <span onClick={() => this.dislike(feed)}>
+                                        <DislikeOutlined className="app-comments-actions"></DislikeOutlined>
+                                        <span className="comment-action">{feed.value.dislikes}</span>
                                       </span>
                                     </Tooltip>,
-                                    <span key="comment-basic-reply-to">Share</span>,
+                                     <Tooltip key="comment-basic-share" title="Share">
+                                      <span onClick={() => this.share(feed)}>
+                                        <SendOutlined className="app-comments-actions"></SendOutlined>
+                                        <span className="comment-action">{feed.value.shares}</span>
+                                      </span>
+                                    </Tooltip>
                                   ]}
-                                  author={<a>{feed.author}</a>}
+                                  author={<a>{feed.value.author}</a>}
                                   avatar={
                                     <Avatar
                                       src="https://i.pravatar.cc/150?img=56"
-                                      alt={feed.author}
+                                      alt={feed.value.author}
                                     />
                                   }
-                                  content={[
+                                  content={
                                     <p>
-                                     {feed.content}
-                                    </p>,
-                                    <Image
-                                      width={200}
-                                      src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                                    />]
+                                     {feed.value.content}
+                                    </p>
                                   }
                                   datetime={
-                                    <Tooltip title={new Date(feed.timestamp).toLocaleDateString()}>
-                                      <span>{new Date(feed.timestamp).toLocaleDateString()}</span>
+                                    <Tooltip title={new Date(feed.value.timestamp).toLocaleDateString()}>
+                                      <span>{new Date(feed.value.timestamp).toLocaleDateString()}</span>
                                     </Tooltip>
                                   }
                                 /> 
@@ -163,7 +186,7 @@ export default class Chat extends Component {
                       animation: 'fadeNewMessage 0.5s', animation: 'forwards'}}>
                         <Col xs={2} sm={2} md={2} lg={2}>
                           <Avatar 
-                          src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                          src="https://avatars1.githubusercontent.com/u/7843281?s=460&v=4"
                           alt="Han Solo" title={this.state.user}></Avatar>
                         </Col>
                         <Col xs={22} sm={22} md={22} lg={22}>
@@ -217,7 +240,10 @@ export default class Chat extends Component {
         db.ref("feeds").on("value", snapshot => {
           let feeds = [];
           snapshot.forEach((feed) => {
-            feeds.push(feed.val());
+            feeds.push({
+              'key' : feed.key,
+              'value' :feed.val() 
+            });
           });
           this.setState({ feeds });
         });
@@ -243,6 +269,7 @@ export default class Chat extends Component {
     }
 
     async postFeeds(event){
+      let placement = 'bottomLeft';
       event.preventDefault();
       this.setState({ writeError: null });
       try {
@@ -251,8 +278,15 @@ export default class Chat extends Component {
           timestamp: Date.now(),
           author: this.state.user.email,
           likes: 0,
-          dislikes: 0
+          dislikes: 0,
+          shares: 0
         });
+        notification.info({
+          message: 'Post',
+          description:
+            'Your post has been created.',
+          placement,
+        })
         this.setState({ message: '' });
       } catch (error) {
         this.setState({ writeError: error.message });
