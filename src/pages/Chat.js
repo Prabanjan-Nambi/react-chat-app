@@ -3,11 +3,12 @@ import { auth } from "../services/firebase";
 import { db } from "../services/firebase";
 import 'antd/dist/antd.css';
 import './Chat.css';
-import { Row, Col, Avatar, Input, Tooltip, Button, Layout, Image, notification} from 'antd';
+import { Row, Col, Avatar, Input, Tooltip, Button, Layout, Image, notification, Badge, Statistic} from 'antd';
 import { Comment} from 'antd';
 import { SendOutlined, FormOutlined, SettingOutlined, BellOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 import { Content} from "antd/lib/layout/layout";
+import ChatImage   from "../image/chat.jpg";
 
 const {Header, Footer } =  Layout;
 const {TextArea} = Input;
@@ -64,20 +65,23 @@ export default class Chat extends Component {
           <Layout style={{backgroundColor: '#dedede !important'}}>
             <Header style={{ position: 'fixed', zIndex: 1, width: '100%', backgroundColor: 'white'}}>
                <Row>
-                 <Col  xs={24} sm={24} md={24} lg={4}>
-                     <Avatar
-                      src="https://i.pravatar.cc/150?img=32"
+                 <Col  xs={24} sm={24} md={24} lg={2}>
+                     <Avatar style={{width: '40px'}}
+                      src={ChatImage}
                       alt="Han Solo" title={this.state.user}></Avatar>
                  </Col>
-                 <Col  xs={24} sm={24} md={24} lg={8}>
+                 <Col  xs={24} sm={24} md={24} lg={6}>
                      <Input className="app-search-input" placeholder="Search Friends..."></Input>
                  </Col>
-                 <Col  xs={24} sm={24} md={24} lg={2}>
+                 <Col  xs={24} sm={24} md={24} lg={4}>
 
                  </Col>
-                 <Col  xs={24} sm={24} md={24} lg={4}>
+                 <Col  xs={24} sm={24} md={24} lg={6}>
                        <SettingOutlined className="app-header-icons" />
-                       <BellOutlined  className="app-header-icons"/>
+                       <BellOutlined  className="app-header-icons">
+                         <Badge count={5}>
+                         </Badge>
+                       </BellOutlined>
                        <InfoCircleOutlined  className="app-header-icons"/>
                  </Col>
                  <Col  xs={24} sm={24} md={24} lg={6}>
@@ -92,7 +96,7 @@ export default class Chat extends Component {
                <Row>
                   <Col xs={0} sm={0} md={0} lg={7}>
                        <div className="app-news-feeds">
-
+                       
                        </div>
                   </Col>
                   <Col xs={24} sm={24} md={24} lg={10}>
