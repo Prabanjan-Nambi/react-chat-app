@@ -18,7 +18,8 @@ export default class Chat extends Component {
         chats: [],
         content: '',
         readError: null,
-        writeError: null
+        writeError: null,
+        feeds: []
       };
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -69,7 +70,9 @@ export default class Chat extends Component {
                           </div>
                       </div>
                       <div className="feeds-list">
-
+                           {this.state.feeds.length === 0  && 
+                              <p className="app-no-feeds">No Feeds Available!</p>
+                           }
                       </div>
                   </Col>
                   <Col xs={0} sm={0} md={0} lg={7}>
