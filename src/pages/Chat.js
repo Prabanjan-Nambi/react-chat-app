@@ -1,14 +1,17 @@
-import React, { Component } from "react";
+import React, { Component, createElement } from "react";
 import { auth } from "../services/firebase";
 import { db } from "../services/firebase";
 import 'antd/dist/antd.css';
 import './Chat.css';
-import { Row, Col, Avatar, Input, Tooltip, Button, Layout} from 'antd';
+import { Row, Col, Avatar, Input, Tooltip, Button, Layout, Image} from 'antd';
+import { Comment} from 'antd';
 import { SendOutlined, FormOutlined, SettingOutlined, BellOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 import { Content} from "antd/lib/layout/layout";
 
 const {Header, Footer } =  Layout;
 const {TextArea} = Input;
+
 
 export default class Chat extends Component {
     constructor(props) {
@@ -19,11 +22,22 @@ export default class Chat extends Component {
         content: '',
         readError: null,
         writeError: null,
-        feeds: []
+        feeds: [],
+        message: ''
       };
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
+      this.handleNewFeed = this.handleNewFeed.bind(this);
+      this.postFeeds = this.postFeeds.bind(this);
     }
+    
+    like = () => {
+      
+    };
+  
+    dislike = () => {
+     
+    };
 
     render() {
         return (
@@ -66,13 +80,56 @@ export default class Chat extends Component {
                               <label className="create-feeds-label">Create Post</label>
                           </div>
                           <div className="create-feeds-input">
-                             <TextArea placeholder="What's on your mind?" style={{borderRadius: '20px', borderWidth: '1px', borderColor: '#e4e4e4'}} rows={4} />
+                             <TextArea placeholder="What's on your mind?" onChange={this.handleNewFeed} value={this.state.message} style={{borderRadius: '20px', borderWidth: '1px', borderColor: '#e4e4e4'}} rows={4} />
+                          </div>
+                          <div className="create-feeds-controls">
+                               <Button className="create-feeds-button" type="primary" onClick={this.postFeeds}>Post</Button>
                           </div>
                       </div>
                       <div className="feeds-list">
                            {this.state.feeds.length === 0  && 
                               <p className="app-no-feeds">No Feeds Available!</p>
                            }
+                           {this.state.feeds.map(feed => {
+                              return <Comment className="app-feeds-list"
+                                  actions={[
+                                    <Tooltip key="comment-basic-like" title="Like">
+                                      <span onClick={this.like}>
+                                        <LikeOutlined></LikeOutlined>
+                                        <span className="comment-action">{feed.likes}</span>
+                                      </span>
+                                    </Tooltip>,
+                                    <Tooltip key="comment-basic-dislike" title="Dislike">
+                                      <span onClick={this.dislike}>
+                                        <DislikeOutlined></DislikeOutlined>
+                                        <span className="comment-action">{feed.dislikes}</span>
+                                      </span>
+                                    </Tooltip>,
+                                    <span key="comment-basic-reply-to">Share</span>,
+                                  ]}
+                                  author={<a>{feed.author}</a>}
+                                  avatar={
+                                    <Avatar
+                                      src="https://i.pravatar.cc/150?img=56"
+                                      alt={feed.author}
+                                    />
+                                  }
+                                  content={[
+                                    <p>
+                                     {feed.content}
+                                    </p>,
+                                    <Image
+                                      width={200}
+                                      src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                                    />]
+                                  }
+                                  datetime={
+                                    <Tooltip title={new Date(feed.timestamp).toLocaleDateString()}>
+                                      <span>{new Date(feed.timestamp).toLocaleDateString()}</span>
+                                    </Tooltip>
+                                  }
+                                /> 
+                            })}
                       </div>
                   </Col>
                   <Col xs={0} sm={0} md={0} lg={7}>
@@ -82,6 +139,9 @@ export default class Chat extends Component {
             </Content>
             <div className="chat-box-container">
                 <div className="chat-box-conversations">
+                  {
+                    this.state.chats.length === 0 &&  <p className="app-no-chats">No Chats Available!</p>
+                  }
                   {this.state.chats.map(chat => {
                     if(chat.userInfo != this.state.user.email) {
                       return <Row key={chat.timestamp} style={{padding: '1rem 0 0 0', transition: 'all 0.15s ease-in-out',
@@ -137,6 +197,12 @@ export default class Chat extends Component {
           content: event.target.value
         });
     }
+
+    handleNewFeed(event){
+      this.setState({
+        message: event.target.value
+      })
+    }
     
     async componentDidMount() {
       this.setState({ readError: null });
@@ -147,6 +213,13 @@ export default class Chat extends Component {
             chats.push(snap.val());
           });
           this.setState({ chats });
+        });
+        db.ref("feeds").on("value", snapshot => {
+          let feeds = [];
+          snapshot.forEach((feed) => {
+            feeds.push(feed.val());
+          });
+          this.setState({ feeds });
         });
       } catch (error) {
         this.setState({ readError: error.message });
@@ -167,5 +240,22 @@ export default class Chat extends Component {
         } catch (error) {
           this.setState({ writeError: error.message });
         }
+    }
+
+    async postFeeds(event){
+      event.preventDefault();
+      this.setState({ writeError: null });
+      try {
+        await db.ref("feeds").push({
+          content: this.state.message,
+          timestamp: Date.now(),
+          author: this.state.user.email,
+          likes: 0,
+          dislikes: 0
+        });
+        this.setState({ message: '' });
+      } catch (error) {
+        this.setState({ writeError: error.message });
+      }
     }
   }

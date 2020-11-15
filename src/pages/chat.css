@@ -137,3 +137,26 @@
     color: #65676b;
     font-size: 17px;
 }
+
+.app-no-chats{
+    margin-top: 61px;
+    text-align: center;
+    font-weight: bold;
+    color: #65676b;
+    font-size: 17px;
+}
+
+.app-feeds-list{
+    background-color: white;
+    margin-top: 13px;
+    border-radius: 10px;
+    padding: 7px;
+}
+
+.create-feeds-controls{
+    margin-top: 16px;
+}
+
+.create-feeds-button{
+    background: #4870df !important;
+}
