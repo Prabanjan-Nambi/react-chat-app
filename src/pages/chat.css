@@ -2,7 +2,7 @@
     position: fixed;
     width: 25%;
     background-color: white;
-    top: 20%;
+    top: 13%;
     right: 2%;
     height: 518px;
     padding: 1rem;
@@ -82,4 +82,50 @@
     background-color: #4870df !important;
     height: 38px;
     width: 38px;
+}
+
+.ant-layout{
+    background-color: rgb(240, 242, 245) !important;
+}
+
+.create-feeds{
+    background-color: white;
+    padding: 33px;
+    border-radius: 15px;
+}
+
+.create-feeds-label{
+   font-weight: bold;
+   margin-left: 15px;
+   color: #8e8e8e;
+}
+
+.create-feeds-header{
+   margin-bottom: 16px;
+}
+
+.create-feeds-icon{
+    color:#4870df !important;
+    font-size: 18px;
+}
+
+.app-search-input{
+    border-radius: 19px;
+    background-color: rgb(240, 242, 245);
+    padding: 9px;
+    border-width: 0;
+    font-size: 15px;
+}
+
+.app-login-name{
+    font-weight: 600;
+    color: #909090;
+    margin-left: 9px;
+}
+
+.app-header-icons{
+    color: #3a65ff !important;
+    font-size: 20px;
+    margin-right: 46px;
+    text-align: center;
 }

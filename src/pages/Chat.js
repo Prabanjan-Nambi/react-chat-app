@@ -2,9 +2,13 @@ import React, { Component } from "react";
 import { auth } from "../services/firebase";
 import { db } from "../services/firebase";
 import 'antd/dist/antd.css';
-import './chat.css';
-import { Row, Col, Avatar, Input, Tooltip, Button } from 'antd';
-import { SendOutlined } from '@ant-design/icons';
+import './Chat.css';
+import { Row, Col, Avatar, Input, Tooltip, Button, Layout} from 'antd';
+import { SendOutlined, FormOutlined, SettingOutlined, BellOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { Content} from "antd/lib/layout/layout";
+
+const {Header, Footer } =  Layout;
+const {TextArea} = Input;
 
 export default class Chat extends Component {
     constructor(props) {
@@ -22,6 +26,57 @@ export default class Chat extends Component {
 
     render() {
         return (
+          <Layout style={{backgroundColor: '#dedede !important'}}>
+            <Header style={{ position: 'fixed', zIndex: 1, width: '100%', backgroundColor: 'white'}}>
+               <Row>
+                 <Col  xs={24} sm={24} md={24} lg={4}>
+                     <Avatar
+                      src="https://i.pravatar.cc/150?img=32"
+                      alt="Han Solo" title={this.state.user}></Avatar>
+                 </Col>
+                 <Col  xs={24} sm={24} md={24} lg={8}>
+                     <Input className="app-search-input" placeholder="Search Friends..."></Input>
+                 </Col>
+                 <Col  xs={24} sm={24} md={24} lg={2}>
+
+                 </Col>
+                 <Col  xs={24} sm={24} md={24} lg={4}>
+                       <SettingOutlined className="app-header-icons" />
+                       <BellOutlined  className="app-header-icons"/>
+                       <InfoCircleOutlined  className="app-header-icons"/>
+                 </Col>
+                 <Col  xs={24} sm={24} md={24} lg={6}>
+                      <Avatar
+                      src="https://i.pravatar.cc/150?img=32"
+                      alt="Han Solo" title={this.state.user}></Avatar>
+                      <span className="app-login-name">Logged In as : {this.state.user.email}</span>
+                 </Col>
+               </Row>
+            </Header>
+            <Content style={{marginTop: '6%'}}>
+               <Row>
+                  <Col xs={0} sm={0} md={0} lg={7}>
+ 
+                  </Col>
+                  <Col xs={24} sm={24} md={24} lg={10}>
+                      <div className="create-feeds">
+                          <div className="create-feeds-header">
+                              <FormOutlined className="create-feeds-icon"/>
+                              <label className="create-feeds-label">Create Post</label>
+                          </div>
+                          <div className="create-feeds-input">
+                             <TextArea placeholder="What's on your mind?" style={{borderRadius: '20px', borderWidth: '1px', borderColor: '#e4e4e4'}} rows={4} />
+                          </div>
+                      </div>
+                      <div className="feeds-list">
+
+                      </div>
+                  </Col>
+                  <Col xs={0} sm={0} md={0} lg={7}>
+                    
+                  </Col>
+               </Row>
+            </Content>
             <div className="chat-box-container">
                 <div className="chat-box-conversations">
                   {this.state.chats.map(chat => {
@@ -69,7 +124,8 @@ export default class Chat extends Component {
                     </Col>
                   </Row>
                 </div>
-            </div>
+              </div>
+          </Layout>
           );
     }
     
