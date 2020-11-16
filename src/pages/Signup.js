@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { signup } from '../helpers/auth';
+import './Credentials.css';
+import { Tooltip, Button, Input, Row, Col } from "antd";
 
 export default class SignUp extends Component {
   
@@ -34,24 +36,28 @@ export default class SignUp extends Component {
    render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form className="app-creds-form">
+        <div className="app-creds-form-div">
           <h1>
             Sign Up to
-          <Link to="/">KloudChat</Link>
+            <span className="app-name">KloudChat</span>
           </h1>
           <p>Fill in the form below to create an account.</p>
-          <div>
-            <input placeholder="Email" name="email" type="email" onChange={this.handleChange} value={this.state.email}></input>
+          <div  className="app-creds-form-controls">
+            <Input placeholder="Email" name="email" type="email" onChange={this.handleChange} value={this.state.email}></Input>
           </div>
-          <div>
-            <input placeholder="Password" name="password" onChange={this.handleChange} value={this.state.password} type="password"></input>
+          <div  className="app-creds-form-controls">
+            <Input placeholder="Password" name="password" onChange={this.handleChange} value={this.state.password} type="password"></Input>
           </div>
           <div>
             {this.state.error ? <p>{this.state.error}</p> : null}
-            <button type="submit">Sign up</button>
+            <Tooltip title="Login">
+                <Button onClick={this.handleSubmit} type="primary">SignUp</Button>
+            </Tooltip>
           </div>
           <hr></hr>
           <p>Already have an account? <Link to="/login">Login</Link></p>
+        </div>
         </form>
       </div>
     )

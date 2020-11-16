@@ -5,6 +5,7 @@ import 'antd/dist/antd.css';
 import './Chat.css';
 import { Row, Col, Avatar, Input, Tooltip, Button, Layout, Image, notification, Badge, Statistic} from 'antd';
 import { Comment} from 'antd';
+import { useHistory } from 'react-router-dom';
 import { SendOutlined, FormOutlined, SettingFilled, BellFilled, LogoutOutlined} from '@ant-design/icons';
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 import { Content} from "antd/lib/layout/layout";
@@ -13,6 +14,7 @@ import firebase from "firebase";
 
 const {Header, Footer } =  Layout;
 const {TextArea} = Input;
+
 
 const AlwaysScrollToBottom = () => {
   const elementRef = React.createRef();
@@ -67,9 +69,9 @@ export default class Chat extends Component {
     };
     
     signOut = () => {
-      auth().signOut().then(function(){
-          window.location.href = '/login';
-      }, function(){
+      auth().signOut().then(function() {
+          
+      }, function() {
           console.log('Logout failed.');
       });
     }
@@ -104,7 +106,7 @@ export default class Chat extends Component {
                       <Avatar
                       src="https://avatars3.githubusercontent.com/u/10627086?s=460&u=6a06199761992e8d933380f1b57371925675f5ba&v=4"
                       alt="Han Solo" title={this.state.user}></Avatar>
-                      <span title={this.state.user.email} className="app-login-name">Logged In as : {this.state.user.email}</span>
+                      <span title={this.state.user.email} className="app-login-name">{this.state.user.email}</span>
                  </Col>
                </Row>
             </Header>

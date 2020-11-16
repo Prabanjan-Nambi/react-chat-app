@@ -44,7 +44,7 @@ class  App extends Component {
     return this.state.loading === true ? <h2>Loading...</h2> : (
 
         <Switch>
-          <Route exact path="/" component={Home}></Route>
+          <PrivateRoute exact path="/" authenticated={this.state.authenticated} component={Home}></PrivateRoute>
           <PrivateRoute exact path="/chat" authenticated={this.state.authenticated} component={Chat}></PrivateRoute>
           <PublicRoute exact path="/signup" authenticated={this.state.authenticated} component={Signup}></PublicRoute>
           <PublicRoute exact path="/login" authenticated={this.state.authenticated} component={Login}></PublicRoute>

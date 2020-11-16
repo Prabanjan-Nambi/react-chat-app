@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { signin } from "../helpers/auth";
+import { Tooltip, Button, Input, Row, Col } from "antd";
+import './Credentials.css';
 
 export default class Login extends Component {
   constructor(props) {
@@ -33,21 +35,19 @@ export default class Login extends Component {
   render() {
     return (
       <div>
-        <form
+        <form className="app-creds-form"
           autoComplete="off"
-          onSubmit={this.handleSubmit}
         >
+        <div className="app-creds-form-div">
           <h1>
             Login to
-            <Link to="/">
-              KloudChat
-            </Link>
+              <span className="app-name">KloudChat</span>
           </h1>
           <p>
             Fill in the form below to login to your account.
           </p>
-          <div>
-            <input
+          <div className="app-creds-form-controls">
+            <Input 
               placeholder="Email"
               name="email"
               type="email"
@@ -55,8 +55,8 @@ export default class Login extends Component {
               value={this.state.email}
             />
           </div>
-          <div>
-            <input
+          <div className="app-creds-form-controls">
+            <Input 
               placeholder="Password"
               name="password"
               onChange={this.handleChange}
@@ -68,12 +68,15 @@ export default class Login extends Component {
             {this.state.error ? (
               <p>{this.state.error}</p>
             ) : null}
-            <button type="submit">Login</button>
+            <Tooltip title="Login">
+                <Button onClick={this.handleSubmit} type="primary">Login</Button>
+            </Tooltip>
           </div>
           <hr />
           <p>
             Don't have an account? <Link to="/signup">Sign up</Link>
           </p>
+          </div>
         </form>
       </div>
     );
