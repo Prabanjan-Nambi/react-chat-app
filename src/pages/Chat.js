@@ -3,10 +3,12 @@ import { auth } from "../services/firebase";
 import { db } from "../services/firebase";
 import 'antd/dist/antd.css';
 import './Chat.css';
-import { Row, Col, Avatar, Input, Tooltip, Button, Layout, Image, notification, Badge, Skeleton} from 'antd';
+import { Row, Col, Avatar, Input, Tooltip, Button, Layout, Image, notification, Badge, Skeleton, Card, Menu, 
+Meta} from 'antd';
 import { Comment} from 'antd';
 import { useHistory } from 'react-router-dom';
-import { SendOutlined, FormOutlined, SettingFilled, BellFilled, LogoutOutlined} from '@ant-design/icons';
+import { SendOutlined, FormOutlined, SettingFilled, BellFilled, LogoutOutlined, MailOutlined, CalendarOutlined, LinkOutlined,
+VideoCameraOutlined, UsergroupAddOutlined, ClockCircleOutlined} from '@ant-design/icons';
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 import { Content} from "antd/lib/layout/layout";
 import AppLogo   from "../image/kloudone.png";
@@ -116,7 +118,35 @@ export default class Chat extends Component {
                <Row>
                   <Col xs={0} sm={0} md={0} lg={7}>
                        <div className="app-news-feeds">
-                       
+                        <Menu className="app-news-menu"
+                          style={{ width: 256 }}
+                          defaultSelectedKeys={['1']}
+                          defaultOpenKeys={['sub1']}
+                          mode={'vertical'}
+                          theme={'light'}
+                        >
+                          <Menu.Item key="1" icon={<Avatar
+                                src="https://avatars3.githubusercontent.com/u/10627086?s=460&u=6a06199761992e8d933380f1b57371925675f5ba&v=4"
+                                alt="Han Solo" title={this.state.user} style={{width: '24px', height: '26px', marginRight: '9px'}}></Avatar>}
+                          >
+                             Pages
+                          </Menu.Item>
+                          <Menu.Item key="2" icon={<CalendarOutlined />}>
+                            Events
+                          </Menu.Item>
+                          <Menu.Item key="3" icon={<LinkOutlined />}>
+                            Marketing
+                          </Menu.Item>
+                          <Menu.Item key="4" icon={<VideoCameraOutlined />}>
+                            Videos
+                          </Menu.Item>
+                          <Menu.Item key="5" icon={<ClockCircleOutlined />}>
+                            Memories
+                          </Menu.Item>
+                          <Menu.Item key="6" icon={<LinkOutlined />}>
+                             Market Place
+                          </Menu.Item>
+                        </Menu>
                        </div>
                   </Col>
                   <Col xs={24} sm={24} md={24} lg={10}>

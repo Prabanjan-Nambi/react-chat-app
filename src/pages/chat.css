@@ -166,8 +166,9 @@
     background: #4870df !important;
 }
 
-.chat-box-header{
-
+.app-news-feeds{
+     overflow-y: auto;
+     overflow-x: hidden;
 }
 
 .chat-box-header-content{
@@ -188,4 +189,24 @@
 
 .app-entity-skeleton{
     background-color: e4e4e4;
+}
+
+.app-news-menu{
+    width: 374px !important;
+    margin: auto auto;
+    border-radius: 7px;
+    font-weight: 700;
+    padding: 0px;
+    margin-bottom: 8px;
+    color: #3a3a3a;
+    background: none;
+}
+
+.app-news-menu .ant-menu-item-selected{
+   background-color: white !important;
+   color: #4870df !important;
+}
+
+.app-news-menu .ant-menu-item{
+    margin-bottom: 16px !important;
 }
