@@ -93,7 +93,7 @@ export default class Chat extends Component {
                  <Col  xs={0} sm={0} md={2} lg={4}>
                  </Col>
                  <Col className="app-header-icons-container" xs={15} sm={15} md={8} lg={6}>
-                       <LogoutOutlined  onClick={() => this.signOut()} className="app-header-icons"/>
+                       <LogoutOutlined  title={'SignOut'} onClick={() => this.signOut()} className="app-header-icons"/>
                        <WechatOutlined title={'Messages'} onClick={() => { this.setState({
                           'showChatBox' : true
                        })}} className="app-header-icons" />
