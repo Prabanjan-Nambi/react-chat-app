@@ -272,10 +272,10 @@ export default class Chat extends Component {
                 </div>
                 <div className="chat-box-controls">
                   <Row style={{padding: '5px'}}>
-                    <Col xs={10} sm={10} md={20} lg={20}>
+                    <Col xs={16} sm={16} md={16} lg={20}>
                         <Input className="chat-box-input" onPressEnter={this.handleSubmit} onChange={this.handleChange} placeholder="Type your message here..." value={this.state.content}/>
                     </Col>
-                    <Col xs={14} sm={14} md={4} lg={4}>
+                    <Col xs={8} sm={8} md={8} lg={4}>
                       <Tooltip title="Send">
                         <Button className="chat-send-button" onClick={this.handleSubmit} type="primary" shape="circle" icon={<SendOutlined />} />
                       </Tooltip>
