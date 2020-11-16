@@ -1,19 +1,13 @@
-import './App.css';
-import profileImage from './image/prabanjan.jpg';
 import React, { Component, notification } from 'react';
-import {
-  Route,
-  BrowserRouter as Router,
-  Switch, HashRouter,
-  Redirect,
-} from "react-router-dom";
-import Home from './pages/Home';
-import Chat from './pages/Chat';
-import Signup from './pages/Signup';
-import Login from './pages/Login';
+import { Route, BrowserRouter as Router, Switch, HashRouter, Redirect} from "react-router-dom";
+import Home from './components/home/home';
+import Chat from './components/dashboard/chat';
+import Signup from './components/authentication-pages/signup';
+import Login from './components/authentication-pages/login';
 import { auth } from './services/firebase';
-import { PrivateRoute } from './routers/privateRoute';
-import { PublicRoute } from './routers/publicRoute';
+import { PrivateRoute } from './app-routers/privateRoute';
+import { PublicRoute } from './app-routers/publicRoute';
+import './App.css';
 
 class  App extends Component {
   constructor() {
@@ -42,14 +36,12 @@ class  App extends Component {
 
   render() {
     return this.state.loading === true ? <h2>Loading...</h2> : (
-
         <Switch>
           <PrivateRoute exact path="/" authenticated={this.state.authenticated} component={Home}></PrivateRoute>
           <PrivateRoute exact path="/chat" authenticated={this.state.authenticated} component={Chat}></PrivateRoute>
           <PublicRoute exact path="/signup" authenticated={this.state.authenticated} component={Signup}></PublicRoute>
           <PublicRoute exact path="/login" authenticated={this.state.authenticated} component={Login}></PublicRoute>
         </Switch>
-
     ); 
   }
 }

@@ -1,3 +1,42 @@
+.app-layout{
+    background-color: #dedede !important;
+}
+
+.app-header{
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    background-color: white;
+}
+
+.app-header-icons-container{
+    height: 64px;
+    overflow: hidden;
+}
+
+.app-header-user-controls{
+    height: 64px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.app-content{
+    margin-top: 6%;
+}
+
+.app-search-user-input{
+    border-radius: 20px;
+    border-width: 1px;
+    border-color: #e4e4e4;
+}
+
+.app-page-menu{
+    width: 24px;
+    height: 26px;
+    margin-right: 9px;
+}
+
 .chat-box-container{
     position: fixed;
     width: 380px;
@@ -57,8 +96,19 @@
     text-overflow: ellipsis;
 }
 
+.chat-box-row{
+    padding: 1rem 0 0 0;
+    transition: all 0.15s ease-in-out;
+    animation: fadeNewMessage 0.5s;
+    animation: forwards;
+}
+
 .chat-box-controls{
    margin-top: 3%;
+}
+
+.chat-box-row-controls{
+  padding: 5px;
 }
 
 .chat-box-input{

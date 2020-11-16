@@ -1,7 +1,4 @@
-import { Layout, Menu, Breadcrumb } from 'antd';
-import { useHistory, Route, Redirect } from "react-router-dom";
-
-const { Header, Content, Footer } = Layout;
+import { Route, Redirect } from "react-router-dom";
     
 export default function Home({ component: Component, authenticated, ...rest }) {
     return (
