@@ -95,10 +95,10 @@ export default class Chat extends Component {
                  <Col  xs={2} sm={2} md={2} lg={6}>
                      <Input className="app-search-input" placeholder="Search Friends..."></Input>
                  </Col>
-                 <Col  xs={0} sm={0} md={4} lg={4}>
+                 <Col  xs={0} sm={0} md={2} lg={4}>
 
                  </Col>
-                 <Col style={{height: '64px', overflow: 'hidden'}} xs={12} sm={12} md={6} lg={6}>
+                 <Col style={{height: '64px', overflow: 'hidden'}} xs={15} sm={15} md={8} lg={6}>
                        <LogoutOutlined  onClick={() => this.signOut()} className="app-header-icons"/>
                        <WechatOutlined title={'Messages'} onClick={() => { this.setState({
                           'showingChatBox' : true
@@ -109,7 +109,7 @@ export default class Chat extends Component {
                        </BellFilled>
                  </Col>
                  <Col style={{height: '64px', overflow: 'hidden', textOverflow: 'ellipsis',
-                 whiteSpace: 'nowrap'}} xs={8} sm={8} md={4} lg={6}>
+                 whiteSpace: 'nowrap'}} xs={3} sm={3} md={3} lg={6}>
                       <Avatar
                       src="https://avatars3.githubusercontent.com/u/10627086?s=460&u=6a06199761992e8d933380f1b57371925675f5ba&v=4"
                       alt="Han Solo" title={this.state.user}></Avatar>
