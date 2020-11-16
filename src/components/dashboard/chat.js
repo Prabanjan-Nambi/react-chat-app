@@ -302,6 +302,9 @@ export default class Chat extends Component {
               'value' :feed.val() 
             });
           });
+          feeds.sort((a, b) => {
+               return b.value.timestamp - a.value.timestamp;
+          });
           this.setState({ feeds });
           this.setState({fetchingFeeds : false});
         });
