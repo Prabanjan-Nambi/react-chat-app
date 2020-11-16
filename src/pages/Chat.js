@@ -8,7 +8,7 @@ Meta} from 'antd';
 import { Comment} from 'antd';
 import { useHistory } from 'react-router-dom';
 import { SendOutlined, FormOutlined, SettingFilled, BellFilled, LogoutOutlined, MailOutlined, CalendarOutlined, LinkOutlined,
-VideoCameraOutlined, UsergroupAddOutlined, ClockCircleOutlined} from '@ant-design/icons';
+VideoCameraOutlined, UsergroupAddOutlined, ClockCircleOutlined, CloseOutlined, WechatOutlined} from '@ant-design/icons';
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 import { Content} from "antd/lib/layout/layout";
 import AppLogo   from "../image/kloudone.png";
@@ -35,7 +35,8 @@ export default class Chat extends Component {
         feeds: [],
         message: '',
         fetchingFeeds: false,
-        fetchingComments: false
+        fetchingComments: false,
+        showingChatBox: true
       };
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -91,15 +92,17 @@ export default class Chat extends Component {
                       src={AppLogo}
                       alt="Han Solo" title={this.state.user}></Avatar>
                  </Col>
-                 <Col  xs={4} sm={4} md={4} lg={6}>
+                 <Col  xs={2} sm={2} md={2} lg={6}>
                      <Input className="app-search-input" placeholder="Search Friends..."></Input>
                  </Col>
                  <Col  xs={0} sm={0} md={4} lg={4}>
 
                  </Col>
-                 <Col style={{height: '64px', overflow: 'hidden'}} xs={10} sm={10} md={4} lg={6}>
+                 <Col style={{height: '64px', overflow: 'hidden'}} xs={12} sm={12} md={6} lg={6}>
                        <LogoutOutlined  onClick={() => this.signOut()} className="app-header-icons"/>
-                       <SettingFilled className="app-header-icons" />
+                       <WechatOutlined title={'Messages'} onClick={() => { this.setState({
+                          'showingChatBox' : true
+                       })}} className="app-header-icons" />
                        <BellFilled  className="app-header-icons">
                          <Badge count={5}>
                          </Badge>
@@ -116,7 +119,7 @@ export default class Chat extends Component {
             </Header>
             <Content style={{marginTop: '6%'}}>
                <Row>
-                  <Col xs={0} sm={0} md={0} lg={7}>
+                  <Col xs={24} sm={24} md={24} lg={7}>
                        <div className="app-news-feeds">
                         <Menu className="app-news-menu"
                           style={{ width: 256 }}
@@ -217,17 +220,21 @@ export default class Chat extends Component {
                   </Col>
                </Row>
             </Content>
-            <div className="chat-box-container">
+            { this.state.showingChatBox && <div className="chat-box-container">
                 <div className="chat-box-header">
                    <p className="chat-box-header-content">Chat Room 
-                   <span className="chat-box-active-icon"></span></p>
+                   <span className="chat-box-active-icon"></span>
+                   <span className="chat-box-minimize"><CloseOutlined  onClick={() => {
+                        this.setState({'showingChatBox' : false});
+                   }} /></span>
+                   </p>
                 </div>
                 <div className="chat-box-conversations">
                   {
-                    this.state.fetchingComments === true && <Skeleton className="app-entity-skeleton" active />
+                    this.state.fetchingComments && <Skeleton className="app-entity-skeleton" active />
                   }
                   {
-                    this.state.fetchingComments === false && this.state.chats.length === 0 && <p className="app-no-chats">No Chats Available!</p>
+                    !this.state.fetchingComments && this.state.chats.length === 0 && <p className="app-no-chats">No Chats Available!</p>
                   }
                   {this.state.chats.map(chat => {
                     if(chat.userInfo != this.state.user.email) {
@@ -275,7 +282,7 @@ export default class Chat extends Component {
                     </Col>
                   </Row>
                 </div>
-              </div>
+              </div>}
           </Layout>
           );
     }

@@ -169,6 +169,7 @@
 .app-news-feeds{
      overflow-y: auto;
      overflow-x: hidden;
+     margin-top: 22px;
 }
 
 .chat-box-header-content{
@@ -209,4 +210,10 @@
 
 .app-news-menu .ant-menu-item{
     margin-bottom: 16px !important;
+}
+
+.chat-box-minimize{
+    float: right;
+    font-weight: bold;
+    color: #676767;
 }
