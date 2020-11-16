@@ -185,3 +185,7 @@
     vertical-align: middle;
     margin-left: 5px;
 }
+
+.app-entity-skeleton{
+    background-color: e4e4e4;
+}

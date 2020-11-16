@@ -3,7 +3,7 @@ import { auth } from "../services/firebase";
 import { db } from "../services/firebase";
 import 'antd/dist/antd.css';
 import './Chat.css';
-import { Row, Col, Avatar, Input, Tooltip, Button, Layout, Image, notification, Badge, Statistic} from 'antd';
+import { Row, Col, Avatar, Input, Tooltip, Button, Layout, Image, notification, Badge, Skeleton} from 'antd';
 import { Comment} from 'antd';
 import { useHistory } from 'react-router-dom';
 import { SendOutlined, FormOutlined, SettingFilled, BellFilled, LogoutOutlined} from '@ant-design/icons';
@@ -31,7 +31,9 @@ export default class Chat extends Component {
         readError: null,
         writeError: null,
         feeds: [],
-        message: ''
+        message: '',
+        fetchingFeeds: false,
+        fetchingComments: false
       };
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -131,7 +133,10 @@ export default class Chat extends Component {
                           </div>
                       </div>
                       <div className="feeds-list">
-                           {this.state.feeds.length === 0  && 
+                           {
+                               this.state.fetchingFeeds === true && <Skeleton className="app-entity-skeleton" active />
+                           }
+                           {this.state.fetchingFeeds === false && this.state.feeds.length === 0  && 
                               <p className="app-no-feeds">No Feeds Available!</p>
                            }
                            {this.state.feeds.map(feed => {
@@ -189,7 +194,10 @@ export default class Chat extends Component {
                 </div>
                 <div className="chat-box-conversations">
                   {
-                    this.state.chats.length === 0 &&  <p className="app-no-chats">No Chats Available!</p>
+                    this.state.fetchingComments === true && <Skeleton className="app-entity-skeleton" active />
+                  }
+                  {
+                    this.state.fetchingComments === false && this.state.chats.length === 0 && <p className="app-no-chats">No Chats Available!</p>
                   }
                   {this.state.chats.map(chat => {
                     if(chat.userInfo != this.state.user.email) {
@@ -257,13 +265,16 @@ export default class Chat extends Component {
     async componentDidMount() {
       this.setState({ readError: null });
       try {
+        this.setState({fetchingComments : true});
         db.ref("chats").on("value", snapshot => {
           let chats = [];
           snapshot.forEach((snap) => {
             chats.push(snap.val());
           });
           this.setState({ chats });
+          this.setState({ fetchingComments : false });
         });
+        this.setState({fetchingFeeds : true});
         db.ref("feeds").on("value", snapshot => {
           let feeds = [];
           snapshot.forEach((feed) => {
@@ -273,9 +284,12 @@ export default class Chat extends Component {
             });
           });
           this.setState({ feeds });
+          this.setState({fetchingFeeds : false});
         });
       } catch (error) {
         this.setState({ readError: error.message });
+        this.setState({fetchingFeeds : false});
+        this.setState({fetchingComments : false});
       }
     }
 
