@@ -1,6 +1,6 @@
 import './App.css';
 import profileImage from './image/prabanjan.jpg';
-import React, { Component } from 'react';
+import React, { Component, notification } from 'react';
 import {
   Route,
   BrowserRouter as Router,
@@ -16,8 +16,8 @@ import { PrivateRoute } from './routers/privateRoute';
 import { PublicRoute } from './routers/publicRoute';
 
 class  App extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       authenticated: false,
       loading: true,

@@ -1,19 +1,24 @@
-import React, { Component, createElement } from "react";
+import React, { Component, createElement, useEffect } from "react";
 import { auth } from "../services/firebase";
 import { db } from "../services/firebase";
 import 'antd/dist/antd.css';
 import './Chat.css';
 import { Row, Col, Avatar, Input, Tooltip, Button, Layout, Image, notification, Badge, Statistic} from 'antd';
 import { Comment} from 'antd';
-import { SendOutlined, FormOutlined, SettingOutlined, BellOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { SendOutlined, FormOutlined, SettingFilled, BellFilled, LogoutOutlined} from '@ant-design/icons';
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 import { Content} from "antd/lib/layout/layout";
-import ChatImage   from "../image/chat.jpg";
+import AppLogo   from "../image/kloudone.png";
+import firebase from "firebase";
 
 const {Header, Footer } =  Layout;
 const {TextArea} = Input;
 
-
+const AlwaysScrollToBottom = () => {
+  const elementRef = React.createRef();
+  useEffect(() => elementRef.current.scrollIntoView());
+  return <div ref={elementRef} />;
+};
 export default class Chat extends Component {
     constructor(props) {
       super(props);
@@ -30,6 +35,7 @@ export default class Chat extends Component {
       this.handleSubmit = this.handleSubmit.bind(this);
       this.handleNewFeed = this.handleNewFeed.bind(this);
       this.postFeeds = this.postFeeds.bind(this);
+      this.signOut = this.signOut.bind(this);
     }
     
     like = (event) => {
@@ -59,36 +65,46 @@ export default class Chat extends Component {
         placement,
       })
     };
+    
+    signOut = () => {
+      auth().signOut().then(function(){
+          window.location.href = '/login';
+      }, function(){
+          console.log('Logout failed.');
+      });
+    }
+    
 
     render() {
         return (
           <Layout style={{backgroundColor: '#dedede !important'}}>
             <Header style={{ position: 'fixed', zIndex: 1, width: '100%', backgroundColor: 'white'}}>
                <Row>
-                 <Col  xs={24} sm={24} md={24} lg={2}>
-                     <Avatar style={{width: '40px'}}
-                      src={ChatImage}
+                 <Col  xs={2} sm={2} md={2} lg={2}>
+                     <Avatar
+                      src={AppLogo}
                       alt="Han Solo" title={this.state.user}></Avatar>
                  </Col>
-                 <Col  xs={24} sm={24} md={24} lg={6}>
+                 <Col  xs={4} sm={4} md={4} lg={6}>
                      <Input className="app-search-input" placeholder="Search Friends..."></Input>
                  </Col>
-                 <Col  xs={24} sm={24} md={24} lg={4}>
+                 <Col  xs={0} sm={0} md={4} lg={4}>
 
                  </Col>
-                 <Col  xs={24} sm={24} md={24} lg={6}>
-                       <SettingOutlined className="app-header-icons" />
-                       <BellOutlined  className="app-header-icons">
+                 <Col style={{height: '64px', overflow: 'hidden'}} xs={10} sm={10} md={4} lg={6}>
+                       <LogoutOutlined  onClick={() => this.signOut()} className="app-header-icons"/>
+                       <SettingFilled className="app-header-icons" />
+                       <BellFilled  className="app-header-icons">
                          <Badge count={5}>
                          </Badge>
-                       </BellOutlined>
-                       <InfoCircleOutlined  className="app-header-icons"/>
+                       </BellFilled>
                  </Col>
-                 <Col  xs={24} sm={24} md={24} lg={6}>
+                 <Col style={{height: '64px', overflow: 'hidden', textOverflow: 'ellipsis',
+                 whiteSpace: 'nowrap'}} xs={8} sm={8} md={4} lg={6}>
                       <Avatar
                       src="https://avatars3.githubusercontent.com/u/10627086?s=460&u=6a06199761992e8d933380f1b57371925675f5ba&v=4"
                       alt="Han Solo" title={this.state.user}></Avatar>
-                      <span className="app-login-name">Logged In as : {this.state.user.email}</span>
+                      <span title={this.state.user.email} className="app-login-name">Logged In as : {this.state.user.email}</span>
                  </Col>
                </Row>
             </Header>
@@ -106,7 +122,7 @@ export default class Chat extends Component {
                               <label className="create-feeds-label">Create Post</label>
                           </div>
                           <div className="create-feeds-input">
-                             <TextArea placeholder="What's on your mind?" onChange={this.handleNewFeed} value={this.state.message} style={{borderRadius: '20px', borderWidth: '1px', borderColor: '#e4e4e4'}} rows={4} />
+                             <TextArea placeholder="What's on your mind?" onPressEnter={this.postFeeds} onChange={this.handleNewFeed} value={this.state.message} style={{borderRadius: '20px', borderWidth: '1px', borderColor: '#e4e4e4'}} rows={4} />
                           </div>
                           <div className="create-feeds-controls">
                                <Button className="create-feeds-button" type="primary" onClick={this.postFeeds}>Post</Button>
@@ -165,6 +181,10 @@ export default class Chat extends Component {
                </Row>
             </Content>
             <div className="chat-box-container">
+                <div className="chat-box-header">
+                   <p className="chat-box-header-content">Chat Room 
+                   <span className="chat-box-active-icon"></span></p>
+                </div>
                 <div className="chat-box-conversations">
                   {
                     this.state.chats.length === 0 &&  <p className="app-no-chats">No Chats Available!</p>
@@ -201,13 +221,14 @@ export default class Chat extends Component {
                       </Row> 
                     }
                   })}
+                  <AlwaysScrollToBottom />
                 </div>
                 <div className="chat-box-controls">
                   <Row style={{padding: '5px'}}>
-                    <Col xs={20} sm={20} md={20} lg={20}>
-                        <Input className="chat-box-input" onChange={this.handleChange} placeholder="Type your message here..." value={this.state.content}/>
+                    <Col xs={10} sm={10} md={20} lg={20}>
+                        <Input className="chat-box-input" onPressEnter={this.handleSubmit} onChange={this.handleChange} placeholder="Type your message here..." value={this.state.content}/>
                     </Col>
-                    <Col xs={4} sm={4} md={4} lg={4}>
+                    <Col xs={14} sm={14} md={4} lg={4}>
                       <Tooltip title="Send">
                         <Button className="chat-send-button" onClick={this.handleSubmit} type="primary" shape="circle" icon={<SendOutlined />} />
                       </Tooltip>

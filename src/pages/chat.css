@@ -1,20 +1,20 @@
 .chat-box-container{
     position: fixed;
-    width: 25%;
+    width: 380px;
     background-color: white;
     top: 13%;
     right: 2%;
-    height: 518px;
+    height: 75vh;
     padding: 1rem;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     background-color: #fff;
-    overflow-y: auto;
+    overflow-y: hidden;
     overflow-x: hidden;
 }
 
 .chat-box-conversations{
-    height: 83%;
+    height: 77%;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -58,8 +58,7 @@
 }
 
 .chat-box-controls{
-    padding-top: 24px;
-    height: 16%;
+   margin-top: 5%;
 }
 
 .chat-box-input{
@@ -97,8 +96,8 @@
 }
 
 .create-feeds-label{
-   font-weight: bold;
-   margin-left: 15px;
+   font-weight: 700;
+   margin-left: 17px;
    color: #8e8e8e;
 }
 
@@ -126,10 +125,13 @@
 }
 
 .app-header-icons{
-    color: #3a65ff !important;
-    font-size: 20px;
+    color: #2d2d2d !important;
+    font-size: 18px;
     margin-right: 46px;
     text-align: center;
+    border-radius: 19px;
+    padding: 9px;
+    background-color: #e4e6eb;
 }
 
 .app-no-feeds{
@@ -162,4 +164,24 @@
 
 .create-feeds-button{
     background: #4870df !important;
+}
+
+.chat-box-header{
+
+}
+
+.chat-box-header-content{
+    font-weight: 700;
+    font-size: 16px;
+    color: #8e8e8e;
+}
+
+.chat-box-active-icon{
+    background-color: green;
+    width: 7px;
+    height: 7px;
+    display: inline-block;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-left: 5px;
 }
